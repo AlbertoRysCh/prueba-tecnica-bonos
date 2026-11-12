@@ -36,4 +36,10 @@ public interface IBonusRepository
     // Guardar cambios, anulaciones o eliminación lógica
     Task SaveChangesAsync(
         CancellationToken cancellationToken);
+
+    // Consultar bonos con filtros y paginación
+    Task<PagedResult<BonusDto>> GetBonusesAsync(
+        BonusFilterRequest filter,
+        CancellationToken cancellationToken);
+
 }

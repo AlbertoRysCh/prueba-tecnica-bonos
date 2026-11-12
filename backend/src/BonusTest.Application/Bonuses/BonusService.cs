@@ -160,4 +160,15 @@ public class BonusService(IBonusRepository repository)
 
         return bonus;
     }
+
+    // Consultar bonos con filtros y paginación
+    public async Task<PagedResult<BonusDto>> GetBonusesAsync(
+        BonusFilterRequest filter,
+        CancellationToken cancellationToken)
+    {
+        return await repository.GetBonusesAsync(
+            filter,
+            cancellationToken);
+    }
+
 }

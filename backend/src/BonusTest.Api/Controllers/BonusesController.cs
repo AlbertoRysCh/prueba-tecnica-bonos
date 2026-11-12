@@ -45,4 +45,32 @@ public class BonusesController(BonusService bonusService) : ControllerBase
             });
         }
     }
+
+    // Consultar bonos con filtros y paginación
+    [HttpGet]
+    public async Task<IActionResult> GetBonuses(
+        [FromQuery] string? departmentCode,
+        [FromQuery] int? employeeNumber,
+        [FromQuery] string? period,
+        [FromQuery] string? stateCode,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var filter = new BonusFilterRequest(
+            departmentCode,
+            employeeNumber,
+            period,
+            stateCode,
+            page,
+            pageSize
+        );
+
+        var result = await bonusService.GetBonusesAsync(
+            filter,
+            cancellationToken);
+
+        return Ok(result);
+    }
+
 }

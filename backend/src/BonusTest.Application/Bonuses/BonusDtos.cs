@@ -34,3 +34,22 @@ public record BonusDto(
 public record CancelBonusRequest(
     string ModifiedBy
 );
+
+
+// Filtros para consultar bonos
+public record BonusFilterRequest(
+    string? DepartmentCode,
+    int? EmployeeNumber,
+    string? Period,
+    string? StateCode,
+    int Page = 1,
+    int PageSize = 10
+);
+
+// Resultado paginado de la consulta
+public record PagedResult<T>(
+    IReadOnlyList<T> Items,
+    int TotalCount,
+    int Page,
+    int PageSize
+);
