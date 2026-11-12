@@ -1,7 +1,9 @@
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BonusTest.Application.Catalogs;
+using BonusTest.Application.Bonuses;
 using BonusTest.Infrastructure.Persistence;
 using BonusTest.Infrastructure.Repositories;
 
@@ -9,14 +11,19 @@ namespace BonusTest.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("BonusTest")));
+            options.UseSqlServer(
+                configuration.GetConnectionString("BonusTest")));
 
+        // Repositorio de catálogos
         services.AddScoped<ICatalogRepository, CatalogRepository>();
 
-        // registra aquí los repositorios del módulo de bonos.
+        // Repositorio de bonos
+        services.AddScoped<IBonusRepository, BonusRepository>();
 
         return services;
     }
