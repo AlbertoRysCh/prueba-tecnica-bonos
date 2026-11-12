@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { BonusReason, BonusType, Department, State } from '../models/catalog';
+import { BonusReason, BonusType, Department, Employee, State } from '../models/catalog';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogApi {
@@ -24,4 +24,14 @@ export class CatalogApi {
   getBonusReasons(): Observable<BonusReason[]> {
     return this.http.get<BonusReason[]>(`${this.baseUrl}/bonus-reasons`);
   }
+
+getActiveEmployees(departmentCode: string): Observable<Employee[]> {
+  return this.http.get<Employee[]>(
+    `${this.baseUrl}/employees`,
+    {
+      params: { departmentCode }
+    }
+  );
+}
+
 }

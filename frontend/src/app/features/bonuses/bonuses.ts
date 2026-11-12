@@ -18,6 +18,8 @@ export class Bonuses {
   private readonly catalogApi = inject(CatalogApi);
   private readonly bonusApi = inject(BonusApi);
 
+protected readonly showCreateModal = signal(false);
+
   // Catálogos existentes
   protected readonly departments = toSignal(
     this.catalogApi.getDepartments(),
@@ -129,4 +131,14 @@ protected previousPage(): void {
       }
     });
   }
+
+
+protected openCreateModal(): void {
+  this.showCreateModal.set(true);
+}
+
+protected closeCreateModal(): void {
+  this.showCreateModal.set(false);
+}
+
 }

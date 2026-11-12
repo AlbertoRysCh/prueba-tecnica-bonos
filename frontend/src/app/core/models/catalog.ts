@@ -33,3 +33,13 @@ export const BonusTypes = {
   FixedAmount: 1,
   SalaryPercentage: 2,
 } as const;
+
+export interface Employee {
+  departmentCode: string;
+  employeeNumber: number;
+  fullName: string;
+  hireDate: string;
+  monthlySalary: number;
+  taxRate: number;
+  employeeStateCode: string;
+}

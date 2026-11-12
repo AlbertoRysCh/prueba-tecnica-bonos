@@ -6,4 +6,7 @@ public interface ICatalogRepository
     Task<IReadOnlyList<StateDto>> GetStatesAsync(string masterStateCode, CancellationToken cancellationToken);
     Task<IReadOnlyList<BonusTypeDto>> GetBonusTypesAsync(CancellationToken cancellationToken);
     Task<IReadOnlyList<BonusReasonDto>> GetActiveBonusReasonsAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<EmployeeDto>> GetActiveEmployeesAsync(
+    string departmentCode,
+    CancellationToken cancellationToken);
 }

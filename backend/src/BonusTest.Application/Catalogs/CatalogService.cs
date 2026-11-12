@@ -13,4 +13,11 @@ public class CatalogService(ICatalogRepository repository)
 
     public Task<IReadOnlyList<BonusReasonDto>> GetActiveBonusReasonsAsync(CancellationToken cancellationToken) =>
         repository.GetActiveBonusReasonsAsync(cancellationToken);
+
+
+    public Task<IReadOnlyList<EmployeeDto>> GetActiveEmployeesAsync(
+        string departmentCode,
+        CancellationToken cancellationToken) =>
+        repository.GetActiveEmployeesAsync(departmentCode, cancellationToken);
+
 }

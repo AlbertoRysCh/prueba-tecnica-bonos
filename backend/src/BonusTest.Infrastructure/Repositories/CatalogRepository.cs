@@ -31,4 +31,25 @@ public class CatalogRepository(AppDbContext context) : ICatalogRepository
             .OrderBy(x => x.ReasonDescription)
             .Select(x => new BonusReasonDto(x.ReasonCode, x.ReasonDescription))
             .ToListAsync(cancellationToken);
+
+
+    public async Task<IReadOnlyList<EmployeeDto>> GetActiveEmployeesAsync(
+        string departmentCode,
+        CancellationToken cancellationToken) =>
+        await context.Employees.AsNoTracking()
+            .Where(x =>
+                x.DepartmentCode == departmentCode &&
+                x.EmployeeStateCode == "0101")
+            .OrderBy(x => x.FullName)
+            .Select(x => new EmployeeDto(
+                x.DepartmentCode,
+                x.EmployeeNumber,
+                x.FullName,
+                x.HireDate,
+                x.MonthlySalary,
+                x.TaxRate,
+                x.EmployeeStateCode
+            ))
+            .ToListAsync(cancellationToken);
+
 }

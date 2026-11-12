@@ -24,4 +24,14 @@ public class CatalogController(CatalogService catalogService) : ControllerBase
     [HttpGet("bonus-reasons")]
     public async Task<IActionResult> GetBonusReasons(CancellationToken cancellationToken) =>
         Ok(await catalogService.GetActiveBonusReasonsAsync(cancellationToken));
+
+
+    [HttpGet("employees")]
+    public async Task<IActionResult> GetActiveEmployees(
+        [FromQuery] string departmentCode,
+        CancellationToken cancellationToken) =>
+        Ok(await catalogService.GetActiveEmployeesAsync(
+            departmentCode,
+            cancellationToken));
+
 }
