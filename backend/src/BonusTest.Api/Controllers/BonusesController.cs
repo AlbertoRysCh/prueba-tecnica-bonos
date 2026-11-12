@@ -139,5 +139,20 @@ public class BonusesController(BonusService bonusService) : ControllerBase
     }
 
 
+    // Consultar bonos de un empleado específico
+    [HttpGet("employee/{departmentCode}/{employeeNumber:int}")]
+    public async Task<IActionResult> GetBonusesByEmployee(
+        string departmentCode,
+        int employeeNumber,
+        CancellationToken cancellationToken)
+    {
+        var bonuses = await bonusService.GetBonusesByEmployeeAsync(
+            departmentCode,
+            employeeNumber,
+            cancellationToken);
+
+        return Ok(bonuses);
+    }
+
 
 }

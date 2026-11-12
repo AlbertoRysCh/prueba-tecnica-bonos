@@ -42,4 +42,12 @@ public interface IBonusRepository
         BonusFilterRequest filter,
         CancellationToken cancellationToken);
 
+
+    // Consultar bonos de un empleado
+    Task<IReadOnlyList<BonusDto>> GetBonusesByEmployeeAsync(
+        string departmentCode,
+        int employeeNumber,
+        CancellationToken cancellationToken);
+
+
 }

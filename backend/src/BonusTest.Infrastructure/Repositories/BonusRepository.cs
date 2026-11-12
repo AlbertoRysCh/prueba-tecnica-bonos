@@ -160,4 +160,39 @@ public class BonusRepository(AppDbContext context) : IBonusRepository
         );
     }
 
+    // Consultar bonos de un empleado
+    public async Task<IReadOnlyList<BonusDto>> GetBonusesByEmployeeAsync(
+        string departmentCode,
+        int employeeNumber,
+        CancellationToken cancellationToken)
+    {
+        return await context.Bonuses
+            .AsNoTracking()
+            .Where(x =>
+                x.DepartmentCode == departmentCode &&
+                x.EmployeeNumber == employeeNumber &&
+                !x.IsDeleted)
+            .OrderByDescending(x => x.CreatedAt)
+            .ThenByDescending(x => x.BonusId)
+            .Select(x => new BonusDto(
+                x.BonusId,
+                x.DepartmentCode,
+                x.EmployeeNumber,
+                x.Employee.FullName,
+                x.Period,
+                x.BonusTypeId,
+                x.BonusType.BonusTypeDescription,
+                x.BonusValue,
+                x.ReasonCode,
+                x.BonusReason.ReasonDescription,
+                x.StateCode,
+                x.GrossAmount,
+                x.TaxAmount,
+                x.NetAmount,
+                x.CreatedAt
+            ))
+            .ToListAsync(cancellationToken);
+    }
+
+
 }

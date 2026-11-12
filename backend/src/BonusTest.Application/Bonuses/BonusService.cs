@@ -257,6 +257,19 @@ public class BonusService(IBonusRepository repository)
         return bonus;
     }
 
+    // Consultar los bonos de un empleado
+    public async Task<IReadOnlyList<BonusDto>> GetBonusesByEmployeeAsync(
+        string departmentCode,
+        int employeeNumber,
+        CancellationToken cancellationToken)
+    {
+        return await repository.GetBonusesByEmployeeAsync(
+            departmentCode,
+            employeeNumber,
+            cancellationToken);
+    }
+
+
 
 
 }
