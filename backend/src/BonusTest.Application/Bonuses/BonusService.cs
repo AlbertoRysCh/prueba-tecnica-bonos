@@ -171,4 +171,52 @@ public class BonusService(IBonusRepository repository)
             cancellationToken);
     }
 
+    // Anular un bono registrado
+    public async Task<Bonus> CancelAsync(
+        int bonusId,
+        CancelBonusRequest request,
+        CancellationToken cancellationToken)
+    {
+        // 1. Buscar el bono
+        var bonus = await repository.GetByIdAsync(
+            bonusId,
+            cancellationToken);
+
+        if (bonus is null)
+        {
+            throw new BusinessException(
+                "BONUS_NOT_FOUND",
+                "El bono no existe o fue eliminado.");
+        }
+
+        // 2. Verificar que esté en estado Registrado
+        if (bonus.StateCode.Trim() != "0201")
+        {
+            throw new BusinessException(
+                "BONUS_CANNOT_BE_CANCELLED",
+                "Solo se pueden anular bonos en estado Registrado.");
+        }
+
+        // 3. Validar el usuario que realiza la anulación
+        if (string.IsNullOrWhiteSpace(request.ModifiedBy))
+        {
+            throw new BusinessException(
+                "INVALID_MODIFIED_BY",
+                "Debe indicar el usuario que realiza la anulación.");
+        }
+
+        // 4. Cambiar el estado a Anulado
+        bonus.StateCode = "0203";
+
+        // 5. Registrar los datos de auditoría
+        bonus.ModifiedBy = request.ModifiedBy.Trim();
+        bonus.ModifiedAt = DateTime.UtcNow;
+
+        // 6. Guardar los cambios en SQL Server
+        await repository.SaveChangesAsync(cancellationToken);
+
+        return bonus;
+    }
+
+
 }

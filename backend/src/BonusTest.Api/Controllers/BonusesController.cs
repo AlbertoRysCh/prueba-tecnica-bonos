@@ -73,4 +73,37 @@ public class BonusesController(BonusService bonusService) : ControllerBase
         return Ok(result);
     }
 
+    // Anular un bono registrado
+    [HttpPut("{id:int}/cancel")]
+    public async Task<IActionResult> CancelBonus(
+        int id,
+        [FromBody] CancelBonusRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var bonus = await bonusService.CancelAsync(
+                id,
+                request,
+                cancellationToken);
+
+            return Ok(new
+            {
+                bonus.BonusId,
+                bonus.StateCode,
+                bonus.ModifiedBy,
+                bonus.ModifiedAt
+            });
+        }
+        catch (BusinessException ex)
+        {
+            return Conflict(new
+            {
+                code = ex.Code,
+                description = ex.Description
+            });
+        }
+    }
+
+
 }
