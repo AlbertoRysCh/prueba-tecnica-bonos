@@ -218,5 +218,45 @@ public class BonusService(IBonusRepository repository)
         return bonus;
     }
 
+    // Eliminar lógicamente un bono
+    public async Task<Bonus> DeleteAsync(
+        int bonusId,
+        string modifiedBy,
+        CancellationToken cancellationToken)
+    {
+        // 1. Buscar el bono
+        var bonus = await repository.GetByIdAsync(
+            bonusId,
+            cancellationToken);
+
+        if (bonus is null)
+        {
+            throw new BusinessException(
+                "BONUS_NOT_FOUND",
+                "El bono no existe o ya fue eliminado.");
+        }
+
+        // 2. Validar el usuario que realiza la operación
+        if (string.IsNullOrWhiteSpace(modifiedBy))
+        {
+            throw new BusinessException(
+                "INVALID_MODIFIED_BY",
+                "Debe indicar el usuario que elimina el bono.");
+        }
+
+        // 3. Marcar el bono como eliminado
+        bonus.IsDeleted = true;
+
+        // 4. Registrar auditoría
+        bonus.ModifiedBy = modifiedBy.Trim();
+        bonus.ModifiedAt = DateTime.UtcNow;
+
+        // 5. Guardar los cambios
+        await repository.SaveChangesAsync(cancellationToken);
+
+        return bonus;
+    }
+
+
 
 }

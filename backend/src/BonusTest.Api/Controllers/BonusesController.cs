@@ -105,5 +105,39 @@ public class BonusesController(BonusService bonusService) : ControllerBase
         }
     }
 
+    // Eliminar lógicamente un bono
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteBonus(
+        int id,
+        [FromQuery] string modifiedBy,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var bonus = await bonusService.DeleteAsync(
+                id,
+                modifiedBy,
+                cancellationToken);
+
+            return Ok(new
+            {
+                bonus.BonusId,
+                bonus.StateCode,
+                bonus.IsDeleted,
+                bonus.ModifiedBy,
+                bonus.ModifiedAt
+            });
+        }
+        catch (BusinessException ex)
+        {
+            return Conflict(new
+            {
+                code = ex.Code,
+                description = ex.Description
+            });
+        }
+    }
+
+
 
 }
