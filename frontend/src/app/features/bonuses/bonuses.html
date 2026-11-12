@@ -1,33 +1,122 @@
+
 <section class="card">
   <header class="card-header">
     <h2>Bonos de desempeño</h2>
-    <button type="button" class="btn btn-primary" disabled>Nuevo registro</button>
+    <button type="button" class="btn btn-primary" disabled>
+      Nuevo registro
+    </button>
   </header>
 
+  <!-- Filtros -->
   <div class="filters">
     <label>
       Área
-      <select>
+      <select (change)="onDepartmentChange($event)">
         <option value="">Todas</option>
         @for (department of departments(); track department.departmentCode) {
-          <option [value]="department.departmentCode">{{ department.departmentName }}</option>
+          <option [value]="department.departmentCode">
+            {{ department.departmentName }}
+          </option>
         }
       </select>
     </label>
 
     <label>
       Estado
-      <select>
+      <select (change)="onStateChange($event)">
         <option value="">Todos</option>
         @for (state of bonusStates(); track state.stateCode) {
-          <option [value]="state.stateCode">{{ state.stateDescription }}</option>
+          <option [value]="state.stateCode">
+            {{ state.stateDescription }}
+          </option>
         }
       </select>
     </label>
   </div>
 
-  <p class="placeholder">
-    Los combos ya consumen <code>GET /api/v1/Catalog</code>. Implementa aquí el listado paginado,
-    las acciones por fila y el modal de registro descritos en el enunciado.
-  </p>
+  <!-- Indicador de carga -->
+  @if (loading()) {
+    <p>Cargando bonos...</p>
+  }
+
+  <!-- Mensaje de error -->
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+
+  <!-- Tabla de bonos -->
+  @if (!loading() && !errorMessage()) {
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Área</th>
+            <th>Período</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Bruto</th>
+            <th>Impuesto</th>
+            <th>Neto</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (bonus of bonuses(); track bonus.bonusId) {
+            <tr>
+              <td>{{ bonus.bonusId }}</td>
+              <td>{{ bonus.employeeName }}</td>
+              <td>{{ bonus.departmentCode }}</td>
+              <td>{{ bonus.period }}</td>
+              <td>{{ bonus.bonusTypeDescription }}</td>
+              <td>{{ bonus.bonusValue }}</td>
+              <td>{{ bonus.grossAmount | number:'1.2-2' }}</td>
+              <td>{{ bonus.taxAmount | number:'1.2-2' }}</td>
+              <td>{{ bonus.netAmount | number:'1.2-2' }}</td>
+              <td>{{ bonus.stateCode }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="10">
+                No se encontraron bonos.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Información de paginación -->
+    
+
+<div class="pagination">
+  <p>Total de registros: {{ totalCount() }}</p>
+
+  <div class="pagination-controls">
+    <button
+      type="button"
+      class="btn"
+      (click)="previousPage()"
+      [disabled]="page() <= 1 || loading()">
+      Anterior
+    </button>
+
+    <span>
+      Página {{ page() }} de {{ totalPages() }}
+    </span>
+
+    <button
+      type="button"
+      class="btn"
+      (click)="nextPage()"
+      [disabled]="page() >= totalPages() || loading()">
+      Siguiente
+    </button>
+  </div>
+</div>
+
+
+  }
 </section>

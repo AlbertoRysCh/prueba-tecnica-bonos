@@ -1,7 +1,7 @@
+
 export interface PagedResponse<T> {
-  pageNumber: number;
+  items: T[];
+  totalCount: number;
+  page: number;
   pageSize: number;
-  totalPages: number;
-  totalRecords: number;
-  data: T[];
 }

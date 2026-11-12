@@ -27,3 +27,123 @@
 .placeholder {
   color: var(--text-muted);
 }
+
+
+/* Contenedor de la tabla */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+/* Tabla de bonos */
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  font-size: 0.875rem;
+}
+
+/* Encabezados */
+.table-container th {
+  background-color: #f1f5f9;
+  color: #334155;
+  font-weight: 600;
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Celdas */
+.table-container td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  white-space: nowrap;
+}
+
+/* Alternar color de filas */
+.table-container tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Resaltar fila al pasar el mouse */
+.table-container tbody tr:hover {
+  background-color: #eff6ff;
+}
+
+/* Evitar borde en la última fila */
+.table-container tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pagination p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-controls span {
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+/* Botones de paginación */
+.pagination-controls .btn {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.pagination-controls .btn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+}
+
+.pagination-controls .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Mensajes de error */
+.error-message {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 768px) {
+  .card-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
